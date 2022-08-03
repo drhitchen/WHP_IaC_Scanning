@@ -10,7 +10,7 @@ provider "aws" {
 resource "aws_s3_bucket" "safebucket" {
   provider = aws.central
   bucket   = "tf-test-bucket-source-12345"
-  acl      = "public-read"
+  acl      = "private"
 
   logging {
     target_bucket = aws_s3_bucket.log_bucket.id
@@ -40,6 +40,20 @@ resource "aws_s3_bucket" "safebucket" {
     }
   }
 }
+
+
+resource "aws_s3_bucket_versioning" "safebucket" {
+  bucket = aws_s3_bucket.safebucket.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+
+
+
+
 
 
 resource "aws_s3_bucket" "log_bucket" {
